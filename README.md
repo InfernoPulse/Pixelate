@@ -9,6 +9,11 @@ To run the program, first compile the java files using
 Then pixelate an image as follows:
 
 ```java Pixelate <path of image> <pixelation depth>```
-- the path of the image can be relative or absolute, but the slashes in the path must be forwards slashes and not backslashes
+- the path of the image can be relative or absolute, but must be one of the following file types:
+  - png
+  - gif
+  - jpg
+  - jpeg
+  - bmp
 - the pixelation depth must be greater than or equal to 0 or lesser than the maximum pixelation depth
   - the maximum pixelation depth will be outputted if you input too high a depth
