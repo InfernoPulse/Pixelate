@@ -32,7 +32,6 @@ public class Pixelate{
                 throw new EOFException();
             }
             File folder = new File("./" + splitFile[splitFile.length - 2] + "/");
-            System.err.println(splitFile[splitFile.length - 2] + "/");
             File picture = new File(path);
             if (!folder.exists()) {
                 folder.mkdirs();
