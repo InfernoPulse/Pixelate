@@ -2,10 +2,10 @@ public class Node {
     
     private Node parent;
     private Node[] children = new Node[4];
-    private int alpha;
-    private int red;
-    private int blue;
-    private int green;
+    private int alpha = 0;
+    private int red = 0;
+    private int blue = 0;
+    private int green = 0;
     private int[][] bounds = new int[2][2];
 
     public Node(Node parent, int[][] bounds){
@@ -65,53 +65,56 @@ public class Node {
         return rgb;
     }
 
+    public String printRGB() {
+        return (this.red + " " + this.green + " " + this.blue);
+    }
+
     public void setChild(Node child, int index){
         this.children[index] = child;
     }
 
     public void setToAvgChildColor(){
-
         //add clause to only average for the number of non transparent pixels
 
-        int tracker = 0;
+        double tracker = 0;
         double r = 0;
         double g = 0;
         double b = 0;
 
         for (Node child : children) {
-            if (child.getAlpha() != 0){
-                tracker++;
-                this.alpha += child.getAlpha();
-                r += gammaExpansion(child.getRed());
-                g += gammaExpansion(child.getGreen());
-                b += gammaExpansion(child.getBlue());
-            }
+            int alpha = child.getAlpha();
+            tracker += alpha;
+            this.alpha += alpha;
+            r += gammaExpansion(child.getRed()) * alpha;
+            g += gammaExpansion(child.getGreen()) * alpha;
+            b += gammaExpansion(child.getBlue()) * alpha;
         }
+        if (tracker > 0) {
+            this.alpha = (int)(tracker / 4.0);
+            r /= tracker;
+            g /= tracker;
+            b /= tracker;
 
-        this.alpha /= tracker;
-        r /= tracker;
-        g /= tracker;
-        b /= tracker;
-
-        this.red = gammaCompression(r);
-        this.green = gammaCompression(g);
-        this.blue = gammaCompression(b);
+            this.red = gammaCompression(r);
+            this.green = gammaCompression(g);
+            this.blue = gammaCompression(b);
+        }
     }
 
     //https://youtu.be/LKnqECcg6Gw Gamma Correction
     //https://en.wikipedia.org/wiki/SRGB sRGB
     public int gammaCompression(double input){
         if(input <= 0.0031308){
-            return (int) (255 * 25 * input / 323);
+            return (int) (255 * 25 * input / 323.0);
         }
-        return (int) (255 * (211 * Math.pow(input, 5 / 12) - 11) / 200);
+        return (int) (255 * (211 * Math.pow(input, 5.0 / 12.0) - 11) / 200);
     }
 
     public double gammaExpansion(int color){
-        double input = color / 255;
+        double input = color / 255.0;
         if (input <= 0.04045) {
-            return (25 * input / 323);
+            return (25 * input / 323.0);
         }
-        return Math.pow(((200 * input + 11) / 211), 12 / 5);
+        return Math.pow(((double)(200 * input + 11) / 211.0), 12.0 / 5.0);
     }
 }
