@@ -20,7 +20,7 @@ public class Pixelate{
         //check that the files extension is that of an image type
         try {
             // when the user chooses a file
-            String[] splitFile = path.split("\\.");
+            String[] splitFile = path.split("\\.|/");
             //checking file is of the right type
             boolean match = false;
             for (String type : fileTypes) {
@@ -31,12 +31,13 @@ public class Pixelate{
             if(match == false){
                 throw new EOFException();
             }
-            File folder = new File(splitFile[0] + "/");
+            File folder = new File("./" + splitFile[splitFile.length - 2] + "/");
+            System.err.println(splitFile[splitFile.length - 2] + "/");
             File picture = new File(path);
             if (!folder.exists()) {
                 folder.mkdirs();
             }
-            File picturePixel = new File(splitFile[0] + "/_depth" + depth + ".png");
+            File picturePixel = new File("./" + splitFile[splitFile.length - 2] + "/_depth" + depth + ".png");
             //https://alvinalexander.com/blog/post/java/open-read-image-file-java-imageio-class/
             image = ImageIO.read(picture);
             long pixelCount = image.getWidth() * image.getHeight();
@@ -64,6 +65,7 @@ public class Pixelate{
         }
         catch (Exception e){
             e.getStackTrace();
+            System.err.println("ERROR " + e.getMessage());
         }
         
     }
