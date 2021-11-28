@@ -20,7 +20,7 @@ public class Pixelate{
         //check that the files extension is that of an image type
         try {
             // when the user chooses a file
-            String[] splitFile = path.split("\\.|/");
+            String[] splitFile = path.split("\\.|/|\\\\");
             //checking file is of the right type
             boolean match = false;
             for (String type : fileTypes) {
