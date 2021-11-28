@@ -5,6 +5,7 @@ This project is meant to allow you to pixelate an image using a quad tree. The p
 To run the program, first compile the java files using
 
 ```javac *.java```
+
 Then pixelate an image as follows:
 
 ```java Pixelate <path of image> <pixelation depth>```
